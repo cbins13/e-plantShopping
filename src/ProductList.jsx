@@ -265,6 +265,9 @@ function ProductList({ onHomeClick }) {
         }));
     };
 
+    const calculateTotalQuantity = () => {
+        return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+    };
 
     return (
         <div>
@@ -309,7 +312,7 @@ function ProductList({ onHomeClick }) {
                                             className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`}
                                             onClick={() => handleAddToCart(plant)}
                                             disabled={addedToCart[plant.name] ? true : false} // Disable button if plant is already added to cart
-                                            // Handle adding plant to cart  
+                                        // Handle adding plant to cart  
                                         >
                                             {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
                                         </button>
