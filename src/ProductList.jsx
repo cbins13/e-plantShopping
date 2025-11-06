@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { addItem } from './CartSlice';
+import { addItem, updateTotalQuantity } from './CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 function ProductList({ onHomeClick }) {
+    const cart = useSelector(state => state.cart.items);
     const [showCart, setShowCart] = useState(false);
     const totalQuantity = useSelector((state) => state.cart.totalQuantity);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
     const dispatch = useDispatch();
+
+    useEffect(() => {
+      console.log(Object?.entries(addedToCart))
+    },[])
+    
+    console.log('cart ', cart)
+    console.log('added ', addedToCart)
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -264,12 +272,9 @@ function ProductList({ onHomeClick }) {
             ...prevState, // Spread the previous state to retain existing entries
             [plant.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
         }));
+        dispatch(updateTotalQuantity(1))
     };
 
-    const calculateTotalQuantity = () => {
-        console.log("addedToCart:", Object.keys(addedToCart).length);
-        return addedToCart ? Object.keys(addedToCart).length : 0;
-    };
 
     return (
         <div>
@@ -294,7 +299,7 @@ function ProductList({ onHomeClick }) {
                         y="150"              // vertical position (slightly below cart)
                         textAnchor="middle"  // center alignment
                         fill="#faf9f9"        // text color
-                    >{!showCart ? calculateTotalQuantity() : totalQuantity}</text></svg></h1></a></div>
+                    >{totalQuantity}</text></svg></h1></a></div>
                 </div>
             </div>
             {!showCart ? (

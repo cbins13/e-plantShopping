@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import {useSelector} from 'react-redux';
 export const CartSlice = createSlice({
   name: 'cart',
   initialState: {
@@ -17,7 +17,6 @@ export const CartSlice = createSlice({
       } else {
         // If item does not exist, add it to the cart with quantity 1
         state.items.push({ name, image, cost, quantity: 1 });
-         state.totalQuantity += 1; // Increment total quantity of unique items in the cart 
       }
     },
     removeItem: (state, action) => {
@@ -29,12 +28,16 @@ export const CartSlice = createSlice({
       const itemToUpdate = state.items.find(item => item.name === name);
       if (itemToUpdate) {
         itemToUpdate.quantity = quantity; // If the item is found, update its quantity to the new value
-         state.totalQuantity += 1; // Increment total quantity of unique items in the cart 
+// Increment total quantity of unique items in the cart 
       }
     },
+    updateTotalQuantity: (state,action) => {
+      console.log(state, action)
+      state.totalQuantity += action.payload;
+    }
   },
 });
 
-export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
+export const { addItem, removeItem, updateQuantity, updateTotalQuantity } = CartSlice.actions;
 
 export default CartSlice.reducer;
