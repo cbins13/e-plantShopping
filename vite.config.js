@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "https://cbins13.github.io/e-plantShopping/",
+  base: "/shoppingreact/dist/",
   plugins: [react()],
   esbuild: {
     loader: 'jsx'
