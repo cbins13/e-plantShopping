@@ -32,7 +32,6 @@ export const CartSlice = createSlice({
       }
     },
     updateTotalQuantity: (state,action) => {
-      console.log(state, action)
       state.totalQuantity += action.payload;
     }
   },

@@ -12,12 +12,6 @@ function ProductList({ onHomeClick }) {
     const [addedToCart, setAddedToCart] = useState({});
     const dispatch = useDispatch();
 
-    useEffect(() => {
-      console.log(Object?.entries(addedToCart))
-    },[])
-    
-    console.log('cart ', cart)
-    console.log('added ', addedToCart)
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -225,6 +219,24 @@ function ProductList({ onHomeClick }) {
             ]
         }
     ];
+    // Sync addedToCart state with the actual cart state from Redux
+    useEffect(() => {
+      const cartItemNames = new Set(cart.map(item => item.name));
+      const updatedAddedToCart = {};
+      // Update addedToCart based on what's actually in the cart
+      plantsArray.forEach(category => {
+        category.plants.forEach(plant => {
+          if (cartItemNames.has(plant.name)) {
+            updatedAddedToCart[plant.name] = true;
+          } else {
+            updatedAddedToCart[plant.name] = false;
+          }
+        });
+      });
+      
+      setAddedToCart(updatedAddedToCart);
+    }, [cart]);
+    
     const styleObj = {
         backgroundColor: '#4CAF50',
         color: '#fff!important',
@@ -268,10 +280,7 @@ function ProductList({ onHomeClick }) {
 
     const handleAddToCart = (plant) => {
         dispatch(addItem({ name: plant.name, image: plant.image, cost: plant.cost })); // Dispatch the action to add the product to the cart (Redux action)
-        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-            ...prevState, // Spread the previous state to retain existing entries
-            [plant.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-        }));
+        // The useEffect will automatically update addedToCart when cart changes
         dispatch(updateTotalQuantity(1))
     };
 
